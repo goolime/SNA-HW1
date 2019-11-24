@@ -1,6 +1,9 @@
 # Social Networks analysis HW-1
 # Michal
 # Gal Meir - 305382137
+adjacency_list, reverse_adjacency_list = {}, {}
+inOrder = []
+byValue = {}
 
 
 # Input: the path for the input file
@@ -33,7 +36,9 @@ def calculate_page_rank(beta=0.85, delta=0.001, maxIterations=20):
 # •	Return “-1” for non-existing name
 # Return Value: Double- The PageRank of the given node name
 def get_PageRank(node_name):
-    return 0
+    if node_name in byValue.keys():
+        return byValue[node_name]
+    return -1
 
 
 # input: Integer- How many nodes
@@ -51,4 +56,4 @@ def get_top_nodes(n):
 # •	The list should be ordered according to the PageRank values from high to low
 # Return Value: List of pairs <node name, PageRank value >
 def get_all_PageRank():
-    return 0
+    return inOrder.copy()
