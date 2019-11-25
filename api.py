@@ -1,5 +1,5 @@
 # Social Networks analysis HW-1
-# Michal
+# Michal Lorberbom - 311120133
 # Gal Meir - 305382137
 adjacency_list, reverse_adjacency_list = {}, {}
 inOrder = []
@@ -27,7 +27,28 @@ def load_graph(path):
 # •	Save the results into an internal data structure for an easy access
 # Return Value: None
 def calculate_page_rank(beta=0.85, delta=0.001, maxIterations=20):
-    return 0
+    global adjacency_list, reverse_adjacency_list, inOrder, byValue
+    prev_value, tmp_value = {}, {}
+    nodes_amount = len(inOrder)
+    bigger_than_delta = True
+    byValue = dict.fromkeys(adjacency_list.keys(), 1.0/float(nodes_amount))         # page rank initialization to 1/N
+    while maxIterations > 0 and bigger_than_delta:   # stop conditions
+        maxIterations -= 1
+        prev_value = byValue.copy()             # page rank of the previous iteration
+        sum, epsilon = 0.0, 0.0                     #sum is S from leaked PageRank calculation , epsilon is for the difference between two iterations
+        for node in adjacency_list.keys():      # calculate temporary PageRank
+            if node not in reverse_adjacency_list or reverse_adjacency_list[node] is None:
+                tmp_value[node] = 0.0           # node in-deg. is 0
+            else:
+                current_value = 0.0
+                for node_in in reverse_adjacency_list[node]:
+                    current_value += beta * float(prev_value[node_in]) / float(len(adjacency_list[node_in]))
+                tmp_value[node] = current_value
+                sum += tmp_value[node]
+        for node in adjacency_list.keys():         # calculate the leaked PageRank
+            byValue[node] = tmp_value[node] + ((1-sum)/float(nodes_amount))
+            epsilon += abs(byValue[node]-prev_value[node])          # calculate the difference between two iterations
+        bigger_than_delta = epsilon >= delta    # if the difference between two iterations is smaller than delta the PageRank calculate will stop
 
 
 # input: str-The node name
