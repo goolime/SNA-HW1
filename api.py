@@ -22,10 +22,11 @@ byValue = {}
 def load_graph(path):
     global reverse_adjacency_list
     global adjacency_list
+    global inOrder
     df = pd.read_csv(header=None, index_col=None, filepath_or_buffer=path, names=['Source', 'Dest'])
-    nodes = pd.unique(df[['Source', 'Dest']].values.ravel())
-    reverse_adjacency_list = dict.fromkeys(nodes)
-    adjacency_list = dict.fromkeys(nodes)
+    inOrder = pd.unique(df[['Source', 'Dest']].values.ravel())
+    reverse_adjacency_list = dict.fromkeys(inOrder)
+    adjacency_list = dict.fromkeys(inOrder)
     # foreach row in the csv with its index
     for index, row in df.iterrows():
         # add to adjacency_list
